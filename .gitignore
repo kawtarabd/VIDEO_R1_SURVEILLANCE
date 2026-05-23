@@ -1,0 +1,39 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# Node / React
+node_modules/
+frontend-react/node_modules/
+dist/
+build/
+frontend-react/dist/
+frontend-react/build/
+
+# Uploads and generated results
+uploads/
+backend/uploads/
+results/
+backend/results/
+evaluations/
+*.mp4
+*.avi
+*.mov
+*.mkv
+*.webm
+
+# Database / exports
+database_export.sql
+
+# OS / IDE
+.DS_Store
+.vscode/
+.idea/
