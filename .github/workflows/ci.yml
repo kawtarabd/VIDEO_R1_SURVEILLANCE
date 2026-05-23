@@ -1,0 +1,82 @@
+name: CI - Video-R1 Surveillance
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  backend-check:
+    name: Backend Python Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install backend dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Check Python syntax
+        run: |
+          python -m py_compile backend/main.py
+          python -m py_compile backend/config.py
+          python -m py_compile backend/database.py
+          python -m py_compile backend/models.py
+          python -m py_compile backend/schemas.py
+          python -m py_compile backend/security.py
+          python -m py_compile backend/routers/auth.py
+          python -m py_compile backend/routers/chat.py
+          python -m py_compile backend/routers/video.py
+          python -m py_compile backend/services/video_r1.py
+          python -m py_compile create_admin.py
+
+  frontend-build:
+    name: Frontend React Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install frontend dependencies
+        working-directory: frontend-react
+        run: npm ci
+
+      - name: Build frontend
+        working-directory: frontend-react
+        run: npm run build
+
+  runpod-worker-check:
+    name: RunPod Worker Python Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Check worker and CLI syntax
+        run: |
+          python -m py_compile runpod_worker/handler.py
+          python -m py_compile src/cli.py
+          python -m py_compile src/client.py
+          python -m py_compile src/prompts.py
+          python -m py_compile src/video_utils.py
