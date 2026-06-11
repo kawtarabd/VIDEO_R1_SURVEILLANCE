@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
--- authentication required
+
 
 -- Dumped from database version 16.11
 -- Dumped by pg_dump version 16.11
@@ -513,4 +513,5 @@ ALTER DEFAULT PRIVILEGES FOR ROLE postgres IN SCHEMA public GRANT ALL ON TABLES 
 -- PostgreSQL database dump complete
 --
 
--- end of authenticated section
+\unrestrict hIpUehoF6tYOAygStOx7C46pct6RAzbH7YVEo17jt2VESm7zkq9AIA1v2zNsBUO
+
