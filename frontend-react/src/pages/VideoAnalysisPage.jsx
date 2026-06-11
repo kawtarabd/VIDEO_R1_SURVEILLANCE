@@ -179,23 +179,22 @@ const pollResults = async (videoId) => {
                     setIsProcessing(false);                    
                     resolve();
 
-                } else if (video.status === 'failed') {
+                                } else if (video.status === 'failed') {
                     clearInterval(pollIntervalRef.current);
                     pollIntervalRef.current = null;
 
                     if (!isMountedRef.current) return;
-                    setError("L'analyse a échoué");            
-                    setIsProcessing(false);                    
+                    setError("L'analyse a échoué");
+                    setIsProcessing(false);
                     reject(new Error('Analyse échouée'));
-                }
 
-                if (attempts >= maxAttempts) {
+                } else if (attempts >= maxAttempts) {
                     clearInterval(pollIntervalRef.current);
                     pollIntervalRef.current = null;
 
                     if (!isMountedRef.current) return;
-                    setError("L'analyse prend trop de temps"); 
-                    setIsProcessing(false);                    
+                    setError("L'analyse prend trop de temps");
+                    setIsProcessing(false);
                     reject(new Error('Timeout'));
                 }
 

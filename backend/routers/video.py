@@ -36,7 +36,7 @@ async def upload_video(
         )
 
     # Valider MIME type
-    if file.content_type and not file.content_type.startswith("video/"):
+    if not file.content_type or not file.content_type.startswith("video/"):
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Le fichier uploadé doit être une vidéo"
@@ -119,7 +119,7 @@ async def upload_video(
         file_path=file_path,
         file_size=real_size,
         duration=video_info.get("duration_seconds"),
-        resolution=f"{video_info.get('width')}x{video_info.get('height')}",
+        resolution=f"{video_info.get('width', '?')}x{video_info.get('height', '?')}",
         fps=video_info.get("fps"),
         status="uploaded"
     )
@@ -234,7 +234,7 @@ async def detect_shoplifting(
     video.status = "processing"
     db.commit()
 
-    user_params = request.dict()
+    user_params = request.model_dump()
 
     logger.info("=" * 70)
     logger.info("USER CONFIGURATION APPLIED:")

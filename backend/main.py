@@ -1,14 +1,16 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 import os
 
 from backend.config import settings
 from backend.database import init_db
 from backend.routers import auth, chat, video
+from backend.security import get_current_active_user
+from backend.models import User
 
 
-# DATABASE INITIALIZATION
 init_db()          
 
 # Creation du FASTAPI APP
@@ -18,7 +20,7 @@ app = FastAPI(
     debug=settings.DEBUG
 )
 
-# Configure CORS
+# Configuration CORS
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.CORS_ORIGINS,
@@ -33,10 +35,19 @@ app.include_router(chat.router)
 app.include_router(video.router)
 
 # STATIC FILES - Servir vidéos uploadées
-if os.path.exists(settings.UPLOAD_DIR):
-    app.mount("/uploads", StaticFiles(directory=settings.UPLOAD_DIR), name="uploads")
 
-# ENDPOINTS RACINE
+
+@app.get("/uploads/{filename}")
+async def serve_upload(
+    filename: str,
+    current_user: User = Depends(get_current_active_user)
+):
+    file_path = os.path.join(settings.UPLOAD_DIR, filename)
+    if not os.path.exists(file_path):
+        from fastapi import HTTPException, status
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Fichier non trouvé")
+    return FileResponse(file_path)
+
 @app.get("/")
 def read_root():
     """API info"""

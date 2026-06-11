@@ -2,6 +2,8 @@
 from pydantic import BaseModel, EmailStr, Field
 from datetime import datetime
 from typing import Optional, List, Literal
+from pydantic import BaseModel, EmailStr, Field, computed_field
+
 
 class UserBase(BaseModel):
     """Schéma de base pour un utilisateur"""
@@ -89,14 +91,18 @@ class VideoResponse(VideoBase):
     user_id: int
     conversation_id: Optional[int]
     filename: str
-    file_path: str
     file_size: Optional[int]
     duration: Optional[float]
     resolution: Optional[str]
     fps: Optional[float]
     status: str
     created_at: datetime
-    
+
+    @computed_field
+    @property
+    def url(self) -> str:
+        return f"/uploads/{self.filename}"
+
     class Config:
         from_attributes = True
 
@@ -144,11 +150,14 @@ class DetectionRequest(BaseModel):
     
     # DETECTION TYPE
     
-    detection_type: str = Field(
-        ...,
-        description="Type: shoplifting, suspicious_behavior, checkout_interactions, timeline, crowd_analysis, general"
-    )
-    
+    detection_type: Literal[
+    "shoplifting",
+    "suspicious_behavior",
+    "checkout_interactions",
+    "timeline",
+    "crowd_analysis",
+    "general"
+   ]= Field(..., description="Type d'analyse vidéo")
     
     #  QUESTION PERSONNALISÉE
     

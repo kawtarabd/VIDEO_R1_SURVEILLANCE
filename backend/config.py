@@ -6,7 +6,7 @@ class Settings(BaseSettings):
     # Application
     APP_NAME: str = "Video-R1 Surveillance API"
     APP_VERSION: str = "1.0.0"
-    DEBUG: bool = True
+    DEBUG: bool = False
     
     # Database - lit depuis .env
     DATABASE_URL: str 
@@ -36,8 +36,8 @@ class Settings(BaseSettings):
     VIDEO_R1_TIMEOUT: int = 600  # 10 minutes
     
     # RunPod
-    RUNPOD_API_KEY: Optional[str] = os.getenv("RUNPOD_API_KEY")
-    RUNPOD_ENDPOINT_ID: Optional[str] = os.getenv("RUNPOD_ENDPOINT_ID")
+    RUNPOD_API_KEY: Optional[str] = None
+    RUNPOD_ENDPOINT_ID: Optional[str] = None
     
     class Config:
         env_file = ".env"

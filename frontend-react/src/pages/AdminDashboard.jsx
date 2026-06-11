@@ -45,10 +45,10 @@ export default function AdminDashboard() {
 
   const toggleUser = async (userId) => {
     try {
-      await api.patch(`/auth/admin/users/${userId}/toggle-active`);
-      setUsers(prev =>
-        prev.map(u => u.id === userId ? { ...u, is_active: !u.is_active } : u)
-      );
+      const res = await api.patch(`/auth/admin/users/${userId}/toggle-active`);
+setUsers(prev =>
+  prev.map(u => u.id === userId ? { ...u, is_active: res.data.is_active } : u)
+);
     } catch (err) { console.error(err); }
   };
 

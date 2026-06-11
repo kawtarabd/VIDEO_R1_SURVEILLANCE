@@ -28,19 +28,19 @@ const DashboardPage = () => {
     const [error, setError] = useState(null);
     
     const pollIntervalRef = useRef(null);
-    
+    const isMountedRef = useRef(true);
     
 
     
     useEffect(() => {
-        return () => {
-            if (pollIntervalRef.current) {
-                clearInterval(pollIntervalRef.current);
-                console.log(' Polling arrêté - composant démonté');
-            }
-        };
-    }, []);
-    
+    isMountedRef.current = true;
+    return () => {
+        isMountedRef.current = false;
+        if (pollIntervalRef.current) {
+            clearInterval(pollIntervalRef.current);
+        }
+    };
+}, []);
     
     // CHARGEMENT DES CONVERSATIONS AU DÉMARRAGE
     
