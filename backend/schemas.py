@@ -116,7 +116,7 @@ class DetectionBase(BaseModel):
 class DetectionCreate(DetectionBase):
     video_id: int
     result: dict
-    confidence: Optional[str]
+    confidence: Optional[float]
     timestamp_start: Optional[float]
     timestamp_end: Optional[float]
 
@@ -124,7 +124,7 @@ class DetectionResponse(DetectionBase):
     id: int
     video_id: int
     result: dict
-    confidence: Optional[str]
+    confidence: Optional[float]
     timestamp_start: Optional[float]
     timestamp_end: Optional[float]
     created_at: datetime

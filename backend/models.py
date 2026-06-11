@@ -201,7 +201,7 @@ class Detection(Base):
     video_id = Column(Integer, ForeignKey("videos.id", ondelete="CASCADE"), nullable=False)
     detection_type = Column(String(50), nullable=False)  # shoplifting, description, etc.
     result = Column(JSON, nullable=False)
-    confidence = Column(String(20))
+    confidence = Column(float)
     timestamp_start = Column(Float)
     timestamp_end = Column(Float)
     created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))

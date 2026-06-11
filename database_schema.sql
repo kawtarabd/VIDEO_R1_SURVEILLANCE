@@ -46,8 +46,8 @@ CREATE TABLE public.conversations (
     id integer NOT NULL,
     user_id integer NOT NULL,
     title character varying(255) DEFAULT 'Nouvelle conversation'::character varying,
-    created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
-    updated_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMPTZ DEFAULT NOW() CURRENT_TIMESTAMP,
+    updated_at TIMESTAMPTZ DEFAULT NOW() CURRENT_TIMESTAMP
 );
 
 
@@ -87,7 +87,7 @@ CREATE TABLE public.detections (
     confidence character varying(20),
     timestamp_start double precision,
     timestamp_end double precision,
-    created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMPTZ DEFAULT NOW() CURRENT_TIMESTAMP
 );
 
 
@@ -124,7 +124,7 @@ CREATE TABLE public.messages (
     conversation_id integer NOT NULL,
     role character varying(20) NOT NULL,
     content text NOT NULL,
-    created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    created_at TIMESTAMPTZ DEFAULT NOW() CURRENT_TIMESTAMP,
     CONSTRAINT check_message_role CHECK (((role)::text = ANY ((ARRAY['user'::character varying, 'assistant'::character varying, 'system'::character varying])::text[])))
 );
 
@@ -164,8 +164,8 @@ CREATE TABLE public.users (
     hashed_password character varying(255) NOT NULL,
     is_active boolean DEFAULT true,
     is_admin boolean DEFAULT false,
-    created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
-    updated_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMPTZ DEFAULT NOW() CURRENT_TIMESTAMP,
+    updated_at TIMESTAMPTZ DEFAULT NOW() CURRENT_TIMESTAMP
 );
 
 
@@ -209,7 +209,7 @@ CREATE TABLE public.videos (
     resolution character varying(20),
     fps double precision,
     status character varying(20) DEFAULT 'uploaded'::character varying,
-    created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    created_at TIMESTAMPTZ DEFAULT NOW() CURRENT_TIMESTAMP,
     CONSTRAINT videos_status_check CHECK (((status)::text = ANY ((ARRAY['uploaded'::character varying, 'processing'::character varying, 'completed'::character varying, 'failed'::character varying])::text[])))
 );
 
