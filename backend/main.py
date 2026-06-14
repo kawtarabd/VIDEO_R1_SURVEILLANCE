@@ -30,14 +30,14 @@ app.add_middleware(
 )
 
 #  routers
-app.include_router(auth.router)
-app.include_router(chat.router)
-app.include_router(video.router)
+app.include_router(auth.router, prefix="/api")
+app.include_router(chat.router, prefix="/api")
+app.include_router(video.router, prefix="/api")
 
 # STATIC FILES - Servir vidéos uploadées
 
 
-@app.get("/uploads/{filename}")
+@app.get("/api/uploads/{filename}")
 async def serve_upload(
     filename: str,
     current_user: User = Depends(get_current_active_user)
